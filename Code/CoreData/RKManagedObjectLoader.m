@@ -112,9 +112,13 @@
     // right before send to avoid sequencing issues where the target object is
     // set before the managed object store.
     if (self.targetObject && [self.targetObject isKindOfClass:[NSManagedObject class]]) {
-        _deleteObjectOnFailure = [(NSManagedObject*)self.targetObject isNew];
-        [self.objectStore save:nil];
-        _targetObjectID = [[(NSManagedObject*)self.targetObject objectID] retain];
+        NSManagedObject* managedObject = (NSManagedObject*)self.targetObject;
+        _deleteObjectOnFailure = [managedObject isNew];
+        NSError* error;
+        if(![managedObject.managedObjectContext obtainPermanentIDsForObjects:[NSArray arrayWithObject:managedObject] error:&error]) {
+            NSLog(@"%@: %@", NSStringFromSelector(_cmd), [error description]);
+        }
+        _targetObjectID = [[managedObject objectID] retain];
     }
     
     return [super prepareURLRequest];

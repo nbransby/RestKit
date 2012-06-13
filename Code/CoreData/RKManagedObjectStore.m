@@ -225,6 +225,7 @@ static RKManagedObjectStore *defaultObjectStore = nil;
 			if (self.delegate != nil && [self.delegate respondsToSelector:@selector(managedObjectStore:didFailToSaveContext:error:exception:)]) {
 				[self.delegate managedObjectStore:self didFailToSaveContext:moc error:localError exception:nil];
 			}
+            NSLog(@"%@", [localError description]);
 
 			NSDictionary* userInfo = [NSDictionary dictionaryWithObject:localError forKey:@"error"];
 			[[NSNotificationCenter defaultCenter] postNotificationName:RKManagedObjectStoreDidFailSaveNotification object:self userInfo:userInfo];
@@ -267,6 +268,7 @@ static RKManagedObjectStore *defaultObjectStore = nil;
 		}
 	}
 	@catch (NSException* e) {
+        NSLog(@"%@", [e description]);
 		if (self.delegate != nil && [self.delegate respondsToSelector:@selector(managedObjectStore:didFailToSaveContext:error:exception:)]) {
 			[self.delegate managedObjectStore:self didFailToSaveContext:moc error:nil exception:e];
 		}
