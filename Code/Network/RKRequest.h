@@ -164,7 +164,7 @@ typedef void(^RKRequestDidFailLoadWithErrorBlock)(NSError *error);
     NSURLConnection *_connection;
     NSDictionary *_additionalHTTPHeaders;
     NSObject<RKRequestSerializable> *_params;
-    NSObject<RKRequestDelegate> *_delegate;
+    __weak NSObject<RKRequestDelegate> *_delegate;
     NSObject<RKConfigurationDelegate> *_configurationDelegate;
     id _userData;
     RKRequestAuthenticationType _authenticationType;
